@@ -13,10 +13,9 @@ class EmojiMemoryGame: ObservableObject {
     @Published private var model: MemoryGame<String>
     private var currentTheme: Theme
     
-    init() {
-        let randomTheme = Self.themes.randomElement()!
-        self.currentTheme = randomTheme
-        self.model = Self.createNewGame(using: randomTheme)
+    init(theme: Theme) {
+        self.currentTheme = theme
+        self.model = Self.createNewGame(using: theme)
     }
     
     var cards: [MemoryGame<String>.Card] {
@@ -47,16 +46,14 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        let randomTheme = Self.themes.randomElement()!
-        self.currentTheme = randomTheme
-        self.model = Self.createNewGame(using: randomTheme)
+        self.model = Self.createNewGame(using: currentTheme)
     }
 }
 
 
 extension EmojiMemoryGame {
     
-    private static let themes = [
+    static let themes = [
         Theme(
             name: "Sports",
             emoji: ["🏉", "🏐", "🏀", "⚽️", "🎾", "⚾️", "🏈", "🏓", "🏏", "🏒", "🏸" ,"🥏"],

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b47849cd-0afd-4a5d-8b3a-146b880769a4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Memorize2024/Memorize2024.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Memorize2024/Memorize2024.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Memorize2024/Memorize2024/ContentView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Memorize2024/Memorize2024/ContentView.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Memorize2024/Memorize2024/EmojiMemoryGame.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Memorize2024/Memorize2024/EmojiMemoryGame.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Memorize2024/Memorize2024/Memorize2024App.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Memorize2024/Memorize2024/Memorize2024App.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Memorize2024/Memorize2024/Theme.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Memorize2024/Memorize2024/Theme.swift" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Alvaro-Orellana"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Alvaro-Orellana/Stanford-CS193p-2023.git",
+    "accountId": "8bf17762-35b7-4c58-8dfd-041604afcdae"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="3CSfezT8DjODuaVVzq9efl7ZXwJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-1f1b7bcced7d-64d779b69b7a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.29188.22" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b47849cd-0afd-4a5d-8b3a-146b880769a4" name="Changes" comment="" />
+      <created>1776383998568</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776383998568</updated>
+    </task>
+    <servers />
+  </component>
+</project>

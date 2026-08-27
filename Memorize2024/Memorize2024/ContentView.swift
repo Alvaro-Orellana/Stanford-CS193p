@@ -9,30 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @ObservedObject var viewModel: EmojiMemoryGame
-    @State var testBinding = true
+    @StateObject private var viewModel: EmojiMemoryGame
+    
+    init(theme: Theme) {
+        _viewModel = StateObject(wrappedValue: EmojiMemoryGame(theme: theme))
+    }
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                ScrollView { cards }
-                    .padding(5)
-                buttons
-            }
-            .navigationTitle(viewModel.title)
-            .toolbar{
-                Rectangle()
-                    .foregroundStyle(.brown)
-                    .frame(minWidth: 200)
-                    .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/, width: 4)
-            }
-            .fullScreenCover(isPresented: $testBinding) {
-                cards
-            }
-            .overlay(alignment: .bottom) {
-                Circle()
-            }
+        VStack {
+            ScrollView { cards }
+                .padding(5)
+            buttons
         }
+        .navigationTitle(viewModel.title)
     }
     
     private var cards: some View {
@@ -95,6 +84,10 @@ struct CardView: View {
     }
 }
 
-#Preview {
-    ContentView(viewModel: EmojiMemoryGame())
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            ContentView(theme: EmojiMemoryGame.themes[0])
+        }
+    }
 }
