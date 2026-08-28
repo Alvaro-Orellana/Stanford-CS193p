@@ -12,14 +12,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     private(set) var cards: [Card]
     private(set) var score: Int
-    private var previouslySeenCards: [Card.ID]
-    private var dateFirstCardWasChosen: Date
+    private var previouslySeenCards: Set<Card.ID>
+    private var firstPickDate: Date
     
     init(numberOfPairsOfCards: Int, cardContentGenerator: (Int) -> CardContent) {
         cards = []
         previouslySeenCards = []
         score = 0
-        dateFirstCardWasChosen = .now
+        firstPickDate = .now
         
         for pairIndex in 0..<max(2, numberOfPairsOfCards) {
             let cardContent = cardContentGenerator(pairIndex)
@@ -29,15 +29,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         cards.shuffle()
     }
     
-    private var indexOfOneAndOnlyFaceUpCard: Int? {
+    // Holds the index only when exactly one card is face up; setting it turns all other cards face down.
+    private var singleFaceUpIndex: Int? {
         get {
             cards.indices.filter{ cards[$0].isFaceUp }.onlyOne
         }
         set {
-            let faceUpCardsIDs = cards.filter(\.isFaceUp).map(\.id)
-            previouslySeenCards.append(contentsOf: faceUpCardsIDs)
-            
-            // Turn all cards face down except the new setted index
+            // Turn all cards face down except the newly selected index.
             cards.indices.forEach { cards[$0].isFaceUp = $0 == newValue }
         }
     }
@@ -47,41 +45,43 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     mutating func choose(_ card: Card) {
-        // The index of the chosen card should always be in the cards array. Ignore a card if it's matched or face up
-        guard
-            let chosenCardIndex = cards.firstIndex(with: card.id), !cards[chosenCardIndex].isMatched, !cards[chosenCardIndex].isFaceUp
+        guard let chosenIndex = cards.firstIndex(with: card.id),
+                !cards[chosenIndex].isMatched,
+                !cards[chosenIndex].isFaceUp
         else { return }
         
-        // Check if there is one and only one card face up
-        if let potencialMatchIndex = indexOfOneAndOnlyFaceUpCard {
-            cards[chosenCardIndex].isFaceUp = true
-            checkIfCardsMatch(card1Index: potencialMatchIndex, card2Index: chosenCardIndex)
+        // If there was one and only one card face up, check for a match.
+        if let singleFaceUpIndex {
+            cards[chosenIndex].isFaceUp = true
+            
+            if cards[singleFaceUpIndex].content == cards[chosenIndex].content {
+                cardsDidMatch(at: chosenIndex, and: singleFaceUpIndex)
+            } else {
+                penalizeIfPreviouslySeen(chosenIndex)
+                penalizeIfPreviouslySeen(singleFaceUpIndex)
+            }
+            previouslySeenCards.formUnion([cards[chosenIndex].id, cards[singleFaceUpIndex].id])
         } else {
         // Either two cards were face up or all cards were face down
-            indexOfOneAndOnlyFaceUpCard = chosenCardIndex
-            dateFirstCardWasChosen = .now
+            singleFaceUpIndex = chosenIndex
+            firstPickDate = .now
         }
     }
     
-    private mutating func checkIfCardsMatch(card1Index: Int, card2Index: Int) {
+    private mutating func cardsDidMatch(at firstIndex: Int, and secondIndex: Int) {
+        cards[firstIndex].isMatched = true
+        cards[secondIndex].isMatched = true
         
-        if cards[card1Index].content == cards[card2Index].content {
-            cards[card1Index].isMatched = true
-            cards[card2Index].isMatched = true
-
-            let secondsPassed = Date().timeIntervalSince(dateFirstCardWasChosen)
-            score += 200 - Int(secondsPassed) * 20
-        } else {
-            // Cards did not match. Decrement score if they were already seen
-            if previouslySeenCards.contains(cards[card1Index].id) {
-                score -= 100
-            }
-            if previouslySeenCards.contains(cards[card2Index].id) {
-                score -= 100
-            }
+        let secondsPassed = Date().timeIntervalSince(firstPickDate)
+        score += 200 - Int(secondsPassed) * 20
+    }
+    
+    private mutating func penalizeIfPreviouslySeen(_ index: Int) {
+        if previouslySeenCards.contains(cards[index].id) {
+            score -= 100
         }
     }
-        
+
     struct Card: Identifiable, Equatable {
         let id: String
         let content: CardContent
