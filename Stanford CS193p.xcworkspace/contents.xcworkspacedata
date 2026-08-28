@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:2025/CodeBreaker/CodeBreaker.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:2024/Memorize2024/Memorize2024.xcodeproj">
    </FileRef>
 </Workspace>
