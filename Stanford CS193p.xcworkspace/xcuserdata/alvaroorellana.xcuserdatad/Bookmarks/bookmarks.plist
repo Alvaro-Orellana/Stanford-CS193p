@@ -10,15 +10,15 @@
 				<key>location-parameters</key>
 				<dict>
 					<key>EndingColumnNumber</key>
-					<string>3</string>
+					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>52</string>
+					<string>39</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>51</string>
+					<string>38</string>
 					<key>Timestamp</key>
-					<string>809796593.467327</string>
+					<string>809809492.7652889</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -27,7 +27,7 @@
 					<key>payload</key>
 					<dict>
 						<key>relative-path</key>
-						<string>Stanford CS193p/2025/CodeBreaker/CodeBreaker/ContentView.swift</string>
+						<string>Stanford CS193p/2025/CodeBreaker/CodeBreaker/MatchMarkers.swift</string>
 					</dict>
 				</dict>
 			</dict>
@@ -35,13 +35,13 @@
 			<dict>
 				<key>focused</key>
 				<string>            .fill(exactCount &gt; pegNumber ? Color.primary : Color.clear)
-   </string>
+</string>
 				<key>leading</key>
 				<string>        
         Circle()
 </string>
 				<key>trailing</key>
-				<string>         .strokeBorder(foundCount &gt; pegNumber ? Color.pink : Color.clear, lineWidth: 2)
+				<string>            .strokeBorder(foundCount &gt; pegNumber ? Color.primary : Color.clear, lineWidth: 2)
             .aspectRatio(1, contentMode: .fit)
     }
 </string>

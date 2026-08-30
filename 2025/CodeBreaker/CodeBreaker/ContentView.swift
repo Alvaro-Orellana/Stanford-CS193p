@@ -27,33 +27,7 @@ struct ContentView: View {
     }
 }
 
-struct MatchMarkers: View {
-    let markers: [Match]
-    
-    var body: some View {
-        VStack {
-            HStack {
-                matchMarker(pegNumber: 0)
-                matchMarker(pegNumber: 1)
-            }
-            HStack {
-                matchMarker(pegNumber: 2)
-                matchMarker(pegNumber: 3)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func matchMarker(pegNumber: Int) -> some View {
-        let exactCount = markers.count(where: { $0 == .exact})
-        let foundCount = markers.count(where: { $0 != .noMatch})
-        
-        Circle()
-            .fill(exactCount > pegNumber ? Color.primary : Color.clear)
-            .strokeBorder(foundCount > pegNumber ? Color.pink : Color.clear, lineWidth: 2)
-            .aspectRatio(1, contentMode: .fit)
-    }
-}
+
 
 enum Match {
     case exact
