@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>top-level-items</key>
+	<array>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>3</string>
+					<key>EndingLineNumber</key>
+					<string>52</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>51</string>
+					<key>Timestamp</key>
+					<string>809796593.467327</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Stanford CS193p/2025/CodeBreaker/CodeBreaker/ContentView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>            .fill(exactCount &gt; pegNumber ? Color.primary : Color.clear)
+   </string>
+				<key>leading</key>
+				<string>        
+        Circle()
+</string>
+				<key>trailing</key>
+				<string>         .strokeBorder(foundCount &gt; pegNumber ? Color.pink : Color.clear, lineWidth: 2)
+            .aspectRatio(1, contentMode: .fit)
+    }
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+	</array>
+</dict>
+</plist>
