@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  CodeBreakerView.swift
 //  CodeBreaker
 //
 //  Created by Alvaro Orellana on 27-08-26.
@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct CodeBreakerView: View {
+    
+    @State var model = CodeBreaker(matches: [.exact, .inexact, .inexact])
+
     var body: some View {
         VStack {
             pegs(for: [.blue, .red, .yellow, .orange])
@@ -22,19 +25,11 @@ struct ContentView: View {
             ForEach(colors.indices, id: \.self) { index in
                 Circle().foregroundStyle(colors[index])
             }
-            MatchMarkers(markers: [.exact, .inexact, .inexact])
+            MatchMarkers(matches: model.matches)
         }
     }
 }
 
-
-
-enum Match {
-    case exact
-    case inexact
-    case noMatch
-}
-
 #Preview {
-    ContentView()
+    CodeBreakerView()
 }
