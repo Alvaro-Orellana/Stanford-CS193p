@@ -57,13 +57,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>56</string>
+					<string>50</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>55</string>
+					<string>49</string>
 					<key>Timestamp</key>
-					<string>810063575.331715</string>
+					<string>810073954.730862</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -79,16 +79,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>        guard guess.pegs.indices.contains(index) else { return }
+				<string>    
 </string>
 				<key>leading</key>
-				<string>    
-    mutating func tappedGuessPeg(at index: Int) {
+				<string>        return exactMatches + inexactMatches
+    }
 </string>
 				<key>trailing</key>
-				<string>        
-        let pegChoicesIndex = pegChoices.firstIndex(of: guess.pegs[index]) ?? 0
-        let nextIndex = (pegChoicesIndex + 1) % pegChoices.count
+				<string>    var hasAnySelectedPeg: Bool {
+        guess.pegs.contains { $0 != Code.clear }
+    }
 </string>
 			</dict>
 			<key>title</key>
@@ -104,13 +104,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>72</string>
+					<string>66</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>71</string>
+					<string>65</string>
 					<key>Timestamp</key>
-					<string>810063575.331762</string>
+					<string>810073954.7309591</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -126,16 +126,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string>        let newMasterCodePegs = Array(pegChoices.shuffled().prefix(Int.random(in: 3...6)))
+				<string>        
 </string>
 				<key>leading</key>
-				<string>    
-    mutating func resetGame() {
+				<string>        let isNewGuess = !attempts.contains { $0.pegs == guess.pegs }
+        guard hasAnySelectedPeg, isNewGuess else { return }
 </string>
 				<key>trailing</key>
-				<string>        let newGuessPegs = Array(repeating: Code.clear, count: newMasterCodePegs.count)
-        
-        masterCode.pegs = newMasterCodePegs
+				<string>        attempts.append(Code(kind: .attempt, pegs: guess.pegs))
+        guess.clear()
+    }
 </string>
 			</dict>
 			<key>type</key>

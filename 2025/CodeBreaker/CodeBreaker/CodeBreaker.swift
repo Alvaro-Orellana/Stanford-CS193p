@@ -33,17 +33,17 @@ struct CodeBreaker {
         self.attempts = []
     }
     
-    func matches(for attemptCode: Code) -> [Match] {
-        let exactMatches = zip(masterCode.pegs, attemptCode.pegs).filter(==).map { _ in Match.exact }
-        let remainingMasterPegs = masterCode.pegs.suffix(from: exactMatches.count)
-        let remainingAttemptPegs = attemptCode.pegs.suffix(from: exactMatches.count)
-       
-        var inexactMatches: [Match] = []
-        for peg in remainingMasterPegs {
-            if remainingAttemptPegs.contains(where: { $0 == peg }) {
-                inexactMatches.append(.inexact)
-            }
-        }
+    /// Calculates exact matches first, then calculates inexact matches from the remaining pegs and returns both together.
+    func matches(for attempt: Code) -> [Match] {
+        let exactIndices = masterCode.pegs.indices.filter { masterCode.pegs[$0] == attempt.pegs[$0] }
+        let exactMatches = Array(repeating: Match.exact, count: exactIndices.count)
+
+        let nonExactIndices = masterCode.pegs.indices.filter { !exactIndices.contains($0) }
+        let remainingMasterPegs = nonExactIndices.map { masterCode.pegs[$0] }
+        let remainingAttemptPegs = nonExactIndices.map { attempt.pegs[$0] }
+        
+        let inexactMatchesCount = remainingMasterPegs.count { remainingAttemptPegs.contains($0) }
+        let inexactMatches = Array(repeating: Match.inexact, count: inexactMatchesCount)
         
         return exactMatches + inexactMatches
     }
