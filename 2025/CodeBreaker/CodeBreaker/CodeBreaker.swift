@@ -33,31 +33,39 @@ struct CodeBreaker {
         self.attempts = []
     }
     
-    func matches(for code: Code) -> [Match] {
-        [.exact, .inexact, .inexact]
+    func matches(for attemptCode: Code) -> [Match] {
+        let exactMatches = zip(masterCode.pegs, attemptCode.pegs).filter(==).map { _ in Match.exact }
+        let remainingMasterPegs = masterCode.pegs.suffix(from: exactMatches.count)
+        let remainingAttemptPegs = attemptCode.pegs.suffix(from: exactMatches.count)
+       
+        var inexactMatches: [Match] = []
+        for peg in remainingMasterPegs {
+            if remainingAttemptPegs.contains(where: { $0 == peg }) {
+                inexactMatches.append(.inexact)
+            }
+        }
+        
+        return exactMatches + inexactMatches
     }
     
-    var canSubmitAttempt: Bool {
-        !guess.pegs.allSatisfy { $0 == Code.clear }
+    var hasAnySelectedPeg: Bool {
+        guess.pegs.contains { $0 != Code.clear }
     }
     
     mutating func tappedGuessPeg(at index: Int) {
-        guard guess.pegs.indices.contains(index) else {
-            return
-        }
+        guard guess.pegs.indices.contains(index) else { return }
+        
         let pegChoicesIndex = pegChoices.firstIndex(of: guess.pegs[index]) ?? 0
         let nextIndex = (pegChoicesIndex + 1) % pegChoices.count
         guess.pegs[index] = pegChoices[nextIndex]
     }
     
     mutating func submitAttempt() {
-        guard canSubmitAttempt else {
-            return
-        }
+        let isNewGuess = !attempts.contains { $0.pegs == guess.pegs }
+        guard hasAnySelectedPeg, isNewGuess else { return }
+        
         attempts.append(Code(kind: .attempt, pegs: guess.pegs))
-        for index in guess.pegs.indices {
-            guess.pegs[index] = Code.clear
-        }
+        guess.clear()
     }
     
     mutating func resetGame() {
@@ -80,4 +88,10 @@ struct Code {
     static let clear = Color.gray.opacity(0.1)
     let kind: Kind
     var pegs: [Peg]
+    
+    mutating func clear() {
+        for index in pegs.indices {
+            pegs[index] = Code.clear
+        }
+    }
 }

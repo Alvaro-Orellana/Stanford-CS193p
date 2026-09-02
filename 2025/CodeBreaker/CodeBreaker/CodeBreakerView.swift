@@ -58,7 +58,7 @@ struct CodeBreakerView: View {
                 .font(.largeTitle)
                 .minimumScaleFactor(0.2)
         }
-        .disabled(!model.canSubmitAttempt)
+        .disabled(!model.hasAnySelectedPeg)
     }
 }
 

@@ -53,18 +53,14 @@ private struct MatchMarkersPreview: View {
     
     var body: some View {
         HStack {
-            dummyPegs
+            ForEach(matches.indices, id: \.self) { _ in
+                Circle()
+            }
             MatchMarkers(matches: matches)
             Spacer()
         }
         .frame(height: pegSize)
         .padding(5)
-    }
-    
-    var dummyPegs: some View {
-        ForEach(matches.indices, id: \.self) { _ in
-            Circle()
-        }
     }
 }
 
