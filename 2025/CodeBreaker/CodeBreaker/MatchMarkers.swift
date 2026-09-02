@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MatchMarkers: View {
-    let markers: [Match]
+    let matches: [CodeBreaker.Match]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -17,12 +17,8 @@ struct MatchMarkers: View {
                 matchMarker(pegNumber: 0)
                 matchMarker(pegNumber: 1)
                 matchMarker(pegNumber: 2)
-
             }
             HStack {
-//                ForEach((markers.count / 2)..<markers.count, id: \.self) { index in
-//                    matchMarker(pegNumber: index)
-//                }
                 matchMarker(pegNumber: 3)
                 matchMarker(pegNumber: 4)
                 matchMarker(pegNumber: 5)
@@ -31,10 +27,9 @@ struct MatchMarkers: View {
     }
     
     @ViewBuilder
-    func matchMarker(pegNumber: Int) -> some View {
-        let exactCount = markers.count(where: { $0 == .exact})
-        let foundCount = markers.count(where: { $0 != .noMatch})
-        
+    private func matchMarker(pegNumber: Int) -> some View {
+        let exactCount = matches.count(where: { $0 == .exact})
+        let foundCount = matches.count(where: { $0 != .noMatch})
         Circle()
             .fill(exactCount > pegNumber ? Color.primary : Color.clear)
             .strokeBorder(foundCount > pegNumber ? Color.primary : Color.clear, lineWidth: 2)
@@ -50,22 +45,26 @@ struct MatchMarkers: View {
     MatchMarkersPreview(matches: [.exact, .inexact, .inexact, .inexact ])
     MatchMarkersPreview(matches: [.exact, .exact, .inexact, .inexact, .inexact])
     MatchMarkersPreview(matches: [.exact, .exact, .inexact, .inexact, .inexact, .noMatch])
-
 }
 
 private struct MatchMarkersPreview: View {
     let pegSize: CGFloat = 47
-    let matches: [Match]
+    let matches: [CodeBreaker.Match]
     
     var body: some View {
         HStack {
-            ForEach(0..<matches.count, id: \.self, content: { _ in Circle() })
-            MatchMarkers(markers: matches)
+            dummyPegs
+            MatchMarkers(matches: matches)
             Spacer()
         }
         .frame(height: pegSize)
         .padding(5)
     }
     
+    var dummyPegs: some View {
+        ForEach(matches.indices, id: \.self) { _ in
+            Circle()
+        }
+    }
 }
 

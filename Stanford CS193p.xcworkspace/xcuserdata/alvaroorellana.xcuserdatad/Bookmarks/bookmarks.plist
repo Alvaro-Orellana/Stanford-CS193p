@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>39</string>
+					<string>34</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>38</string>
+					<string>33</string>
 					<key>Timestamp</key>
-					<string>809809492.7652889</string>
+					<string>809841908.936896</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -37,7 +37,7 @@
 				<string>            .fill(exactCount &gt; pegNumber ? Color.primary : Color.clear)
 </string>
 				<key>leading</key>
-				<string>        
+				<string>        let foundCount = matches.count(where: { $0 != .noMatch})
         Circle()
 </string>
 				<key>trailing</key>
