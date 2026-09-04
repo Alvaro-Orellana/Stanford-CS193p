@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MatchMarkers: View {
+struct MatchMarkersView: View {
     let matches: [CodeBreaker.Match]
     
     var body: some View {
@@ -56,7 +56,7 @@ private struct MatchMarkersPreview: View {
             ForEach(matches.indices, id: \.self) { _ in
                 Circle()
             }
-            MatchMarkers(matches: matches)
+            MatchMarkersView(matches: matches)
             Spacer()
         }
         .frame(height: pegSize)

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-typealias Peg = Color
+typealias Peg = String
 
 struct CodeBreaker {
     
@@ -17,21 +17,22 @@ struct CodeBreaker {
         case noMatch
     }
     
-    let pegChoices: [Peg]
+    private(set) var pegChoices: [Peg]
     private(set) var masterCode: Code
     private(set) var guess: Code
     private(set) var attempts: [Code]
     
-    init(pegChoices: [Peg] = [.blue, .yellow, .red, .green, .orange, .purple], pegsNumber: Int = 4) {
-        self.pegChoices = pegChoices
-        
+    init(pegChoices: [Peg], pegsNumber: Int) {
         let masterCodePegs = Array(pegChoices.shuffled().prefix(pegsNumber))
         let guessPegs = Array(repeating: Code.clear, count: masterCodePegs.count)
         
+        self.pegChoices = pegChoices
         self.masterCode = Code(kind: .master, pegs: masterCodePegs)
         self.guess = Code(kind: .guess, pegs: guessPegs)
         self.attempts = []
     }
+    
+    
     
     /// Calculates exact matches first, then calculates inexact matches from the remaining pegs and returns both together.
     func matches(for attempt: Code) -> [Match] {
@@ -42,7 +43,7 @@ struct CodeBreaker {
         let remainingMasterPegs = nonExactIndices.map { masterCode.pegs[$0] }
         let remainingAttemptPegs = nonExactIndices.map { attempt.pegs[$0] }
         
-        let inexactMatchesCount = remainingMasterPegs.count { remainingAttemptPegs.contains($0) }
+        let inexactMatchesCount = remainingMasterPegs.count(where: { remainingAttemptPegs.contains($0) })
         let inexactMatches = Array(repeating: Match.inexact, count: inexactMatchesCount)
         
         return exactMatches + inexactMatches
@@ -50,6 +51,10 @@ struct CodeBreaker {
     
     var hasAnySelectedPeg: Bool {
         guess.pegs.contains { $0 != Code.clear }
+    }
+    
+    var isNewGuess: Bool {
+        !attempts.contains { previousAttempt in previousAttempt.pegs == guess.pegs }
     }
     
     mutating func tappedGuessPeg(at index: Int) {
@@ -61,14 +66,15 @@ struct CodeBreaker {
     }
     
     mutating func submitAttempt() {
-        let isNewGuess = !attempts.contains { $0.pegs == guess.pegs }
-        guard hasAnySelectedPeg, isNewGuess else { return }
+        guard isNewGuess, hasAnySelectedPeg else { return }
         
         attempts.append(Code(kind: .attempt, pegs: guess.pegs))
         guess.clear()
     }
     
     mutating func resetGame() {
+        let randomTheme = CodeBreakerView.themes.keys.randomElement()!
+        pegChoices = CodeBreakerView.themes[randomTheme]!
         let newMasterCodePegs = Array(pegChoices.shuffled().prefix(Int.random(in: 3...6)))
         let newGuessPegs = Array(repeating: Code.clear, count: newMasterCodePegs.count)
         
@@ -85,7 +91,8 @@ struct Code {
         case guess
         case attempt
     }
-    static let clear = Color.gray.opacity(0.1)
+//    static let clear = Color.clear
+    static let clear = ""
     let kind: Kind
     var pegs: [Peg]
     
