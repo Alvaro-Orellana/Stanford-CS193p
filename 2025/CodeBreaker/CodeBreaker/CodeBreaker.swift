@@ -66,17 +66,6 @@ struct CodeBreaker {
         attempts.append(Code(kind: .attempt, pegs: guess.pegs))
         guess.clear()
     }
-    
-    mutating func resetGame() {
-        let randomTheme = CodeBreakerView.themes.keys.randomElement()!
-        pegChoices = CodeBreakerView.themes[randomTheme]!
-        let newMasterCodePegs = Array(pegChoices.shuffled().prefix(Int.random(in: 3...6)))
-        let newGuessPegs = Array(repeating: Code.clear, count: newMasterCodePegs.count)
-        
-        masterCode.pegs = newMasterCodePegs
-        guess.pegs = newGuessPegs
-        attempts = []
-    }
 }
 
 struct Code {
@@ -86,7 +75,6 @@ struct Code {
         case guess
         case attempt
     }
-//    static let clear = Color.clear
     static let clear = ""
     let kind: Kind
     var pegs: [Peg]
