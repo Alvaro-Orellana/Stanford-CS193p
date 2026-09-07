@@ -5,8 +5,6 @@
 //  Created by Alvaro Orellana on 31-08-26.
 //
 
-import SwiftUI
-
 typealias Peg = String
 
 struct CodeBreaker {
@@ -16,7 +14,6 @@ struct CodeBreaker {
         case inexact
         case noMatch
     }
-    
     private(set) var pegChoices: [Peg]
     private(set) var masterCode: Code
     private(set) var guess: Code
@@ -32,18 +29,16 @@ struct CodeBreaker {
         self.attempts = []
     }
     
-    
-    
     /// Calculates exact matches first, then calculates inexact matches from the remaining pegs and returns both together.
     func matches(for attempt: Code) -> [Match] {
         let exactIndices = masterCode.pegs.indices.filter { masterCode.pegs[$0] == attempt.pegs[$0] }
-        let exactMatches = Array(repeating: Match.exact, count: exactIndices.count)
-
         let nonExactIndices = masterCode.pegs.indices.filter { !exactIndices.contains($0) }
-        let remainingMasterPegs = nonExactIndices.map { masterCode.pegs[$0] }
-        let remainingAttemptPegs = nonExactIndices.map { attempt.pegs[$0] }
         
-        let inexactMatchesCount = remainingMasterPegs.count(where: { remainingAttemptPegs.contains($0) })
+        let nonExactMasterPegs = nonExactIndices.map { masterCode.pegs[$0] }
+        let nonExactAttemptPegs = nonExactIndices.map { attempt.pegs[$0] }
+        let inexactMatchesCount = nonExactMasterPegs.count(where: { nonExactAttemptPegs.contains($0) })
+        
+        let exactMatches = Array(repeating: Match.exact, count: exactIndices.count)
         let inexactMatches = Array(repeating: Match.inexact, count: inexactMatchesCount)
         
         return exactMatches + inexactMatches
@@ -53,10 +48,10 @@ struct CodeBreaker {
         guess.pegs.contains { $0 != Code.clear }
     }
     
-    var isNewGuess: Bool {
-        !attempts.contains { previousAttempt in previousAttempt.pegs == guess.pegs }
+    var isGuessNew: Bool {
+        !attempts.contains { $0.pegs == guess.pegs }
     }
-    
+
     mutating func tappedGuessPeg(at index: Int) {
         guard guess.pegs.indices.contains(index) else { return }
         
@@ -65,8 +60,8 @@ struct CodeBreaker {
         guess.pegs[index] = pegChoices[nextIndex]
     }
     
-    mutating func submitAttempt() {
-        guard isNewGuess, hasAnySelectedPeg else { return }
+    mutating func submitGuess() {
+        guard isGuessNew, hasAnySelectedPeg else { return }
         
         attempts.append(Code(kind: .attempt, pegs: guess.pegs))
         guess.clear()

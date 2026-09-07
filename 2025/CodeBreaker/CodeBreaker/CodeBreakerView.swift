@@ -9,16 +9,15 @@ import SwiftUI
 
 struct CodeBreakerView: View {
     
-    // [.blue, .yellow, .red, .green, .orange, .purple]
     static let themes: [String: [String]] = [
         "emoji faces": "😀😃🥲🥰😋".map(String.init),
         "emoji balls": "⚽️🏈🏀🎾🎱🏐🏉".map(String.init),
         "emoji vehicles": "🚕🏎️🚚🚓🚜🚌🛵".map(String.init),
-        "colors": "green red blue orange purple yellow".components(separatedBy: .whitespaces)
+        "colors": "green,red,blue,orange,purple,yellow".components(separatedBy: .punctuationCharacters)
     ]
 
     @State var model = CodeBreaker(
-        pegChoices: themes["emoji faces"]!,
+        pegChoices: Self.themes["emoji faces"]!,
         pegsNumber: Int.random(in: 3...6)
     )
     @State private var isRepeatedGuess = false
@@ -33,7 +32,9 @@ struct CodeBreakerView: View {
                     pegsRow(for: model.attempts[index])
                 }
             }
-            Button(action: { model.resetGame() }) {
+            Button {
+                model.resetGame()
+            } label: {
                 Text("New Game")
             }
         }
@@ -44,16 +45,18 @@ struct CodeBreakerView: View {
     func pegsRow(for code: Code) -> some View {
         HStack {
             ForEach(code.pegs.indices, id: \.self) { index in
+                let peg = code.pegs[index]
+                let pegColor = Color(named: peg)
                 RoundedRectangle(cornerRadius: 15)
-                    .fill(Color(named: code.pegs[index]) ?? .clear)
-                    .strokeBorder(lineWidth: 2)
+                    .fill(pegColor ?? .clear)
+                    .strokeBorder(lineWidth: peg == Code.clear ? 1 : 0)
                     .aspectRatio(1, contentMode: .fit)
                     .contentShape(Circle())
                     .overlay {
-                        let contentIsColor = Color(named: code.pegs[index]) != nil
-                        Text(contentIsColor ? "" : code.pegs[index])
-                            .font(.system(size: 80))
-                            .minimumScaleFactor(0.2)
+                        let contentIsColor = pegColor != nil
+                        Text(contentIsColor ? "" : peg)
+                            .font(.system(size: 120))
+                            .minimumScaleFactor(9/120)
                     }
                     .onTapGesture {
                         if code.kind == .guess {
@@ -73,8 +76,8 @@ struct CodeBreakerView: View {
     
     var submitButton: some View {
         Button {
-            if model.isNewGuess {
-                model.submitAttempt()
+            if model.isGuessNew {
+                model.submitGuess()
             } else {
                 isRepeatedGuess = true
             }
@@ -99,17 +102,17 @@ struct CodeBreakerView: View {
 extension Color {
     init?(named name: String) {
         switch name.lowercased() {
-        case "red": self = .red
-        case "blue": self = .blue
-        case "green": self = .green
-        case "yellow": self = .yellow
-        case "orange": self = .orange
-        case "purple": self = .purple
-        case "pink": self = .pink
-        case "gray", "grey": self = .gray
-        case "black": self = .black
-        case "white": self = .white
-        default: return nil
+            case "red": self = .red
+            case "blue": self = .blue
+            case "green": self = .green
+            case "yellow": self = .yellow
+            case "orange": self = .orange
+            case "purple": self = .purple
+            case "pink": self = .pink
+            case "gray", "grey": self = .gray
+            case "black": self = .black
+            case "white": self = .white
+            default: return nil
         }
     }
 }
