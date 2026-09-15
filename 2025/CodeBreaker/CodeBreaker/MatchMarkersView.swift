@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MatchMarkersView: View {
-    let matches: [CodeBreaker.Match]
+    let matches: [Match]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -49,7 +49,7 @@ struct MatchMarkersView: View {
 
 private struct MatchMarkersPreview: View {
     let pegSize: CGFloat = 47
-    let matches: [CodeBreaker.Match]
+    let matches: [Match]
     
     var body: some View {
         HStack {

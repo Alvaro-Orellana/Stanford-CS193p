@@ -25,22 +25,4 @@ extension Color {
             default: return nil
         }
     }
-    
-    var name: String? {
-        switch self {
-            case .red: "red"
-            case .blue: "blue"
-            case .green: "green"
-            case .yellow: "yellow"
-            case .orange: "orange"
-            case .purple: "purple"
-            case .pink: "pink"
-            case .gray: "gray"
-            case .black: "black"
-            case .white: "white"
-            case .brown: "brown"
-            case .cyan: "cyan"
-            default: nil
-        }
-    }
 }

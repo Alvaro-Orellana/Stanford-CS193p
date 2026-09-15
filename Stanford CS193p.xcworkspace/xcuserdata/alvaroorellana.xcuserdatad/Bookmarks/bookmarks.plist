@@ -57,13 +57,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>27</string>
+					<string>25</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>25</string>
+					<string>24</string>
 					<key>Timestamp</key>
-					<string>810495342.667773</string>
+					<string>811192628.09333</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -80,16 +80,15 @@
 			<dict>
 				<key>focused</key>
 				<string>        let randomtheme = Self.themes.randomElement()!
-        title = randomtheme.key
 </string>
 				<key>leading</key>
 				<string>    
     private func newGame() {
 </string>
 				<key>trailing</key>
-				<string>        model = CodeBreaker(pegChoices: randomtheme.value, pegsNumber: Int.random(in: 3...6))
+				<string>        title = randomtheme.key
+        game = CodeBreakerGame(pegChoices: randomtheme.value, pegsNumber: Int.random(in: 3...6))
     }
-
 </string>
 			</dict>
 			<key>type</key>
