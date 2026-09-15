@@ -1,9 +1,10 @@
 //
-//  CodeBreakerView.swift
+//  CodeBreakerView 2.swift
 //  CodeBreaker
 //
-//  Created by Alvaro Orellana on 27-08-26.
+//  Created by Alvaro Orellana on 15-09-26.
 //
+
 
 import SwiftUI
 
@@ -13,6 +14,7 @@ struct CodeBreakerView: View {
     @State private var game = CodeBreakerGame(pegChoices: [], pegsNumber: 0)
     @State private var isRepeatedGuess = false
     @State private var title: String = ""
+    @State private var selection: Int = 0
             
     static let themes: [String: [String]] = [
         "Colors": "green,red,blue,orange,purple,yellow,brown,cyan".components(separatedBy: .punctuationCharacters),
@@ -40,6 +42,8 @@ struct CodeBreakerView: View {
                     pegsRow(for: game.attempts[index])
                 }
             }
+            pegChooser
+                .padding(.bottom)
             Button(action: newGame) {
                 Text("New Game")
             }
@@ -48,13 +52,31 @@ struct CodeBreakerView: View {
         .onAppear(perform: newGame)
     }
     
+    private var pegChooser: some View {
+        HStack {
+            ForEach(game.pegChoices, id: \.self) { peg in
+                PegView(peg)
+                    .onTapGesture {
+                        game.setGuessPeg(to: peg, at: selection)
+                    }
+            }
+        }
+    }
+    
     private func pegsRow(for code: Code) -> some View {
         HStack {
             ForEach(code.pegs.indices, id: \.self) { index in
                 PegView(code.pegs[index])
+                    .padding(5)
+                    .background {
+                        if code.kind == .guess, index == selection {
+                            RoundedRectangle(cornerRadius: 15)
+                                .fill(Color.gray(0.85))
+                        }
+                    }
                     .onTapGesture {
                         if code.kind == .guess {
-                            game.tappedGuessPeg(at: index)
+                            selection = index
                         }
                     }
             }
@@ -90,32 +112,4 @@ struct CodeBreakerView: View {
             Text("Check it and try another one")
         }
     }
-}
-
-private struct PegView: View {
-    private let peg: Peg
-    private let pegColor: Color?
-    
-    init(_ peg: Peg) {
-        self.peg = peg
-        pegColor = Color(named: peg)
-    }
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 15)
-            .fill(pegColor ?? .clear)
-            .strokeBorder(lineWidth: peg == Code.missingPeg ? 1 : 0)
-            .contentShape(Circle())
-            .aspectRatio(1, contentMode: .fit)
-            .overlay {
-                let contentIsColor = pegColor != nil
-                Text(contentIsColor ? "" : peg)
-                    .font(.system(size: 120))
-                    .minimumScaleFactor(9/120)
-            }
-    }
-}
-
-#Preview {
-    CodeBreakerView()
 }
