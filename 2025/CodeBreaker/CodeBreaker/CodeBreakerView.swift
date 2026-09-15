@@ -27,6 +27,7 @@ struct CodeBreakerView: View {
         let randomtheme = Self.themes.randomElement()!
         title = randomtheme.key
         game = CodeBreakerGame(pegChoices: randomtheme.value, pegsNumber: Int.random(in: 3...6))
+        selection = 0
     }
 
     var body: some View {
@@ -34,16 +35,20 @@ struct CodeBreakerView: View {
             Text(title)
                 .font(.largeTitle)
                 .bold()
-            pegsRow(for: game.masterCode)
+            view(for: game.masterCode)
             Divider()
-            pegsRow(for: game.guess)
             ScrollView {
+                if !game.isOver {
+                    view(for: game.guess)
+                }
                 ForEach(game.attempts.indices.reversed(), id: \.self) { index in
-                    pegsRow(for: game.attempts[index])
+                    view(for: game.attempts[index])
                 }
             }
-            pegChooser
-                .padding(.bottom)
+            PegChooser(choices: game.pegChoices) { peg in
+                game.setGuessPeg(to: peg, at: selection)
+                selection = (selection + 1) % game.guess.pegs.count
+            }
             Button(action: newGame) {
                 Text("New Game")
             }
@@ -52,37 +57,11 @@ struct CodeBreakerView: View {
         .onAppear(perform: newGame)
     }
     
-    private var pegChooser: some View {
+    private func view(for code: Code) -> some View {
         HStack {
-            ForEach(game.pegChoices, id: \.self) { peg in
-                PegView(peg)
-                    .onTapGesture {
-                        game.setGuessPeg(to: peg, at: selection)
-                    }
-            }
-        }
-    }
-    
-    private func pegsRow(for code: Code) -> some View {
-        HStack {
-            ForEach(code.pegs.indices, id: \.self) { index in
-                PegView(code.pegs[index])
-                    .padding(5)
-                    .background {
-                        if code.kind == .guess, index == selection {
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(Color.gray(0.85))
-                        }
-                    }
-                    .onTapGesture {
-                        if code.kind == .guess {
-                            selection = index
-                        }
-                    }
-            }
-            RoundedRectangle(cornerRadius: 15)
+            CodeView(code: code, selection: $selection)
+            Color.clear
                 .aspectRatio(1, contentMode: .fit)
-                .foregroundStyle(.clear)
                 .overlay {
                     if let matches = code.matches {
                         MatchMarkersView(matches: matches)
@@ -94,17 +73,16 @@ struct CodeBreakerView: View {
     }
     
     private var submitButton: some View {
-        Button {
+        Button("Guess") {
             if game.isGuessNew {
-                withAnimation { game.submitGuess() }
+                withAnimation { game.submitGuess(); selection = 0 }
+                print(game.masterCode.pegs)
             } else {
                 isRepeatedGuess = true
             }
-        } label: {
-            Text("Submit")
-                .font(.system(size: 80))
-                .minimumScaleFactor(0.1)
         }
+        .font(.system(size: 80))
+        .minimumScaleFactor(0.1)
         .disabled(!game.hasAnySelectedPeg)
         .alert("You already tried this combination", isPresented: $isRepeatedGuess) {
             Button("OK") { }
@@ -112,4 +90,40 @@ struct CodeBreakerView: View {
             Text("Check it and try another one")
         }
     }
+}
+
+private struct CodeView: View {
+    let code: Code
+    @Binding var selection: Int
+    
+    var body: some View {
+        ForEach(code.pegs.indices, id: \.self) { index in
+            PegView(peg: code.pegs[index])
+                .padding(Selection.padding)
+                .background {
+                    if code.kind == .guess && index == selection {
+                        Selection.shape.foregroundStyle(Selection.color)
+                    }
+                }
+                .overlay {
+                    Selection.shape.foregroundStyle(code.isHidden ? Color.gray : .clear)
+                }
+                .onTapGesture {
+                    if code.kind == .guess {
+                        selection = index
+                    }
+                }
+        }
+    }
+    
+    struct Selection {
+        static let padding: CGFloat = 5
+        static let shape = RoundedRectangle(cornerRadius: cornerRadius)
+        static let cornerRadius: CGFloat = 10
+        static let color = Color.gray(0.85)
+    }
+}
+
+#Preview {
+    CodeBreakerView()
 }

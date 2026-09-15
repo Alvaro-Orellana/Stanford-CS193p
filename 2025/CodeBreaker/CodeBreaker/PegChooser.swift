@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct PegChooser: View {
+    let choices: [Peg]
+    let action: ((Peg) -> Void)?
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            ForEach(choices, id: \.self) { peg in
+                PegView(peg: peg)
+                    .onTapGesture {
+                        action?(peg)
+                    }
+            }
+        }
     }
 }
 
 #Preview {
-    PegChooser()
+    PegChooser(choices: ["red", "yellow", "blue"], action: nil)
 }

@@ -25,4 +25,8 @@ extension Color {
             default: return nil
         }
     }
+    
+    static func gray(_ brightness: CGFloat) -> Color {
+        Color(hue: 148/360, saturation: 0, brightness: brightness)
+    }
 }

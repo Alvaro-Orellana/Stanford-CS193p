@@ -9,16 +9,11 @@ import SwiftUI
 
 
 
-private struct PegView: View {
-    private let peg: Peg
-    private let pegColor: Color?
-    
-    init(_ peg: Peg) {
-        self.peg = peg
-        pegColor = Color(named: peg)
-    }
+struct PegView: View {
+    let peg: Peg
     
     var body: some View {
+        let pegColor = Color(named: peg)
         RoundedRectangle(cornerRadius: 15)
             .fill(pegColor ?? .clear)
             .strokeBorder(lineWidth: peg == Code.missingPeg ? 1 : 0)
@@ -34,5 +29,5 @@ private struct PegView: View {
 }
 
 #Preview {
-    CodeBreakerView()
+    PegView(peg: "red")
 }

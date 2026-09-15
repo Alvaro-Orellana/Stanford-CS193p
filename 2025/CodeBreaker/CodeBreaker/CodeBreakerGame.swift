@@ -20,13 +20,18 @@ struct CodeBreakerGame {
     private(set) var attempts: [Code]
     
     init(pegChoices: [Peg], pegsNumber: Int) {
+        self.pegChoices = pegChoices
+        
         let masterCodePegs = Array(pegChoices.shuffled().prefix(pegsNumber))
         let guessPegs = Array(repeating: Code.missingPeg, count: masterCodePegs.count)
         
-        self.pegChoices = pegChoices
-        self.masterCode = Code(pegs: masterCodePegs, kind: .master)
+        self.masterCode = Code(pegs: masterCodePegs, kind: .master(isHidden: true))
         self.guess = Code(pegs: guessPegs, kind: .guess)
         self.attempts = []
+    }
+    
+    var isOver: Bool {
+        attempts.last?.pegs == masterCode.pegs
     }
     
     var hasAnySelectedPeg: Bool {
@@ -36,13 +41,11 @@ struct CodeBreakerGame {
     var isGuessNew: Bool {
         !attempts.contains { $0.pegs == guess.pegs }
     }
-
-    mutating func tappedGuessPeg(at index: Int) {
+    
+    mutating func setGuessPeg(to peg: Peg, at index: Int) {
         guard guess.pegs.indices.contains(index) else { return }
         
-        let pegChoicesIndex = pegChoices.firstIndex(of: guess.pegs[index]) ?? 0
-        let nextIndex = (pegChoicesIndex + 1) % pegChoices.count
-        guess.pegs[index] = pegChoices[nextIndex]
+        guess.pegs[index] = peg
     }
     
     mutating func submitGuess() {
@@ -50,6 +53,12 @@ struct CodeBreakerGame {
         
         let matches = guess.match(against: masterCode)
         attempts.append(Code(pegs: guess.pegs, kind: .attempt(matches)))
+        
+        guess.clear()
+        
+        if isOver {
+            masterCode.kind = .master(isHidden: false)
+        }
     }
 }
 

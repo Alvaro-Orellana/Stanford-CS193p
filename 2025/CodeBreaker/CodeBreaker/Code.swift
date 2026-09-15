@@ -8,14 +8,21 @@
 
 struct Code {
     var pegs: [Peg]
-    let kind: Kind
+    var kind: Kind
     
     static let missingPeg = ""
 
     enum Kind: Equatable {
-        case master
+        case master(isHidden: Bool)
         case guess
         case attempt([Match])
+    }
+    
+    var isHidden: Bool {
+        switch kind {
+        case.master(let isHidden): isHidden
+        default: false
+        }
     }
     
     var matches: [Match]? {
@@ -34,5 +41,11 @@ struct Code {
         let exactMatches = Array(repeating: Match.exact, count: exactCount)
         let inexactMatches = Array(repeating: Match.inexact, count: inexactCount)
         return exactMatches + inexactMatches
+    }
+    
+    mutating func clear() {
+        for index in pegs.indices {
+            pegs[index] = Code.missingPeg
+        }
     }
 }
