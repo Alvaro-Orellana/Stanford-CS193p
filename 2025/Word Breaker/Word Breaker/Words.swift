@@ -13,25 +13,20 @@ extension EnvironmentValues {
 
 @Observable
 class Words {
-    private var words = Dictionary<Int, Set<String>>()
-    
-    static let shared = Words(from: URL(string: "https://web.stanford.edu/class/cs193p/common.words"))
+    private var words: [Int: Set<String>] = [:]
+    static let shared = Words(from: URL(string: "https://web.stanford.edu/class/cs193p/common.words")!)
 
-    private init(from url: URL? = nil) {
+    private init(from url: URL) {
         Task {
-            var _words = [Int:Set<String>]()
-            if let url {
-                do {
-                    for try await word in url.lines {
-                        _words[word.count, default: Set<String>()].insert(word.uppercased())
-                    }
-                } catch {
-                    print("Words could not load words from \(url): \(error)")
+            do {
+                for try await word in url.lines {
+                    words[word.count, default: []].insert(word.uppercased())
                 }
+            } catch {
+                print("Words could not load words from \(url): \(error)")
             }
-            words = _words
             if count > 0 {
-                print("Words loaded \(count) words from \(url?.absoluteString ?? "nil")")
+                print("Words loaded \(count) words from \(url.absoluteString)")
             }
         }
     }
@@ -40,16 +35,21 @@ class Words {
         words.values.reduce(0) { $0 + $1.count }
     }
     
+    var isEmpty: Bool {
+        words.isEmpty
+    }
+    
     func contains(_ word: String) -> Bool {
         words[word.count]?.contains(word.uppercased()) == true
     }
 
     func random(length: Int) -> String? {
-        let word = words[length]?.randomElement()
-        if word == nil {
+        if let word = words[length]?.randomElement() {
+            return word
+        } else {
             print("Words could not find a random word of length \(length)")
+            return nil
         }
-        return word
     }
 }
 
