@@ -35,11 +35,11 @@ struct CodeBreakerGame {
     }
     
     var hasAnySelectedPeg: Bool {
-        guess.pegs.contains { $0 != Code.missingPeg }
+        guess.pegs.contains { guessPeg in guessPeg != Code.missingPeg }
     }
     
     var isGuessNew: Bool {
-        !attempts.contains { $0.pegs == guess.pegs }
+        !attempts.contains { attempt in attempt.pegs == guess.pegs }
     }
     
     mutating func setGuessPeg(to peg: Peg, at index: Int) {

@@ -9,20 +9,17 @@ import SwiftUI
 
 struct PegChooser: View {
     let choices: [Peg]
-    let action: ((Peg) -> Void)?
+    let pegTapped: ((Peg) -> Void)?
     
     var body: some View {
         HStack {
             ForEach(choices, id: \.self) { peg in
-                PegView(peg: peg)
-                    .onTapGesture {
-                        action?(peg)
-                    }
+                PegView(peg: peg).onTapGesture { pegTapped?(peg) }
             }
         }
     }
 }
 
 #Preview {
-    PegChooser(choices: ["red", "yellow", "blue"], action: nil)
+    PegChooser(choices: ["red", "yellow", "blue"], pegTapped: nil)
 }

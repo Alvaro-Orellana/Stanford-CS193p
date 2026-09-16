@@ -14,6 +14,7 @@ struct PegView: View {
     
     var body: some View {
         let pegColor = Color(named: peg)
+        
         RoundedRectangle(cornerRadius: 15)
             .fill(pegColor ?? .clear)
             .strokeBorder(lineWidth: peg == Code.missingPeg ? 1 : 0)
