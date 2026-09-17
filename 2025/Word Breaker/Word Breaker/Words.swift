@@ -25,7 +25,7 @@ class Words {
             } catch {
                 print("Words could not load words from \(url): \(error)")
             }
-            if count > 0 {
+            if !words.isEmpty {
                 print("Words loaded \(count) words from \(url.absoluteString)")
             }
         }

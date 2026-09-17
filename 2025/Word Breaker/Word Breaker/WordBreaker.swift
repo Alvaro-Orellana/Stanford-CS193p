@@ -20,13 +20,23 @@ struct WordBreaker {
         guessCode = Code(kind: .guess, word: String(repeating: Code.empty, count: masterWord.count))
     }
     
+    var isOver: Bool {
+        attempts.last?.word == masterCode.word
+    }
+    
     mutating func setGuess(to character: Character, at index: Int) {
         var characters = Array(guessCode.word)
         characters[index] = character
         guessCode.word = String(characters)
     }
     
-    mutating func submitWord() {
-        attempts.append(Code(kind: .attempt, word: guessCode.word))
+    mutating func submitGuess() {
+        let matches = masterCode.match(against: guessCode)
+        attempts.append(Code(kind: .attempt(matches), word: guessCode.word))
+        guessCode.clear()
+        
+        if isOver {
+            
+        }
     }
 }

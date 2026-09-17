@@ -25,7 +25,8 @@ struct Word_BreakerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
+            WordBreakerView()
         }
         .modelContainer(sharedModelContainer)
     }

@@ -49,6 +49,51 @@
 			<key>type</key>
 			<string>bookmark</string>
 		</dict>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>EndingColumnNumber</key>
+					<string>0</string>
+					<key>EndingLineNumber</key>
+					<string>46</string>
+					<key>StartingColumnNumber</key>
+					<string>0</string>
+					<key>StartingLineNumber</key>
+					<string>45</string>
+					<key>Timestamp</key>
+					<string>811376552.022959</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Stanford CS193p/2025/Word Breaker/Word Breaker/WordBreakerView.swift</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>text-context</key>
+			<dict>
+				<key>focused</key>
+				<string>//            let guess = game.guessCode.word.lowercased()
+</string>
+				<key>leading</key>
+				<string>    var submitButton: some View {
+        Button("Submit") {
+</string>
+				<key>trailing</key>
+				<string>//            guard UITextChecker().isAWord(guess) else {
+//                didSubmitInvalidWord = true
+//                return
+</string>
+			</dict>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
 	</array>
 </dict>
 </plist>
