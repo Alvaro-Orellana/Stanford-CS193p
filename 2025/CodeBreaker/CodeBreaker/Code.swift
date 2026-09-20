@@ -37,7 +37,6 @@ struct Code {
         let pairs = zip(self.pegs, otherCode.pegs)
         let exactCount = pairs.count(where: ==)
         let inexactCount = pairs.count { peg, otherPeg in peg != otherPeg && self.pegs.contains(otherPeg) }
-        
         let exactMatches = Array(repeating: Match.exact, count: exactCount)
         let inexactMatches = Array(repeating: Match.inexact, count: inexactCount)
         return exactMatches + inexactMatches

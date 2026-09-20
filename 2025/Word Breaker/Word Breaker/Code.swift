@@ -26,30 +26,25 @@ struct Code {
     }
     
     // Main Algorithm of the game. The matching logic
-    func match(against otherCode: Code) -> [Match] {
-        let word = Array(self.word)
-        let otherWord = Array(otherCode.word)
-        
-        let exactMatches: [Match] = word.indices.map { i in
-            if i < otherWord.count && word[i] == otherWord[i] {
-                return .exact
-            } else {
-                return .noMatch
+    func match(against guess: Code) -> [Match] {
+        var masterLetters = word.map(Optional.some)
+        let guessLetters = Array(guess.word)
+        var matches = Array(repeating: Match.noMatch, count: guessLetters.count)
+
+        for i in matches.indices where guessLetters[i] == masterLetters[i] {
+            matches[i] = .exact
+            masterLetters[i] = nil
+        }
+        for i in matches.indices where matches[i] != .exact {
+            if let matchIndex = masterLetters.firstIndex(of: guessLetters[i]) {
+                matches[i] = .inexact
+                masterLetters[matchIndex] = nil
             }
         }
-        let inexactMatches: [Match] = word.indices.reversed().map { i in
-            if i < otherWord.count && word[i] != otherWord[i] {
-                if word.contains(otherWord[i]) {
-                    
-                }
-            }
-            
-        }
-        
+        return matches
     }
     
     mutating func clear() {
-        let spacesCount = word.count
-        word = String(repeating: Code.empty, count: spacesCount)
+        word = String(repeating: Code.empty, count: word.count)
     }
 }

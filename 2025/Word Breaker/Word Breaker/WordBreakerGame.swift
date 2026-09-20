@@ -9,10 +9,10 @@
 import Foundation
 
 
-struct WordBreaker {
-    var masterCode: Code
-    var guessCode: Code
-    var attempts: [Code] = []
+struct WordBreakerGame {
+    private(set) var masterCode: Code
+    private(set) var guessCode: Code
+    private(set) var attempts: [Code] = []
     let choices: [Character] = Array("QWERTYUIOPASDFGHJKLZXCVBNM")
     
     init(masterWord: String) {
@@ -26,6 +26,8 @@ struct WordBreaker {
     
     mutating func setGuess(to character: Character, at index: Int) {
         var characters = Array(guessCode.word)
+        guard characters.indices.contains(index) else { return }
+
         characters[index] = character
         guessCode.word = String(characters)
     }
@@ -36,7 +38,7 @@ struct WordBreaker {
         guessCode.clear()
         
         if isOver {
-            
+            masterCode.kind = .master(isHidden: false)
         }
     }
 }
