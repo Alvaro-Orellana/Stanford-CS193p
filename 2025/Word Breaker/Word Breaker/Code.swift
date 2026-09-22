@@ -25,6 +25,14 @@ struct Code {
         case attempt([Match])
     }
     
+    var matches: [Match]? {
+        if case .attempt(let array) = kind {
+            return array
+        } else {
+            return nil
+        }
+    }
+    
     // Main Algorithm of the game. The matching logic
     func match(against guess: Code) -> [Match] {
         var masterLetters = word.map(Optional.some)

@@ -15,7 +15,7 @@ extension EnvironmentValues {
 class Words {
     private var words: [Int: Set<String>] = [:]
     static let shared = Words(from: URL(string: "https://web.stanford.edu/class/cs193p/common.words")!)
-    private(set) var wordsLoaded = false
+    private(set) var wordsDidLoad = false
 
     private init(from url: URL) {
         Task {
@@ -28,7 +28,7 @@ class Words {
             }
             if !words.isEmpty {
                 print("Words loaded \(count) words from \(url.absoluteString)")
-                wordsLoaded = true
+                wordsDidLoad = true
             }
         }
     }
