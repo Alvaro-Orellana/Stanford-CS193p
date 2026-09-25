@@ -15,6 +15,8 @@ struct WordBreakerView: View {
     @State private var requestedWordLength = 4
     @State private var didSubmitInvalidWord = false
     @State private var isShowingRestartPrompt = false
+    @State private var dict: [Character: Match] = [:]
+
     
     var body: some View {
         VStack {
@@ -25,15 +27,14 @@ struct WordBreakerView: View {
             }
             ScrollView {
                 ForEach(game.attempts.indices.reversed(), id: \.self) { index in
-                    CodeView(code: game.attempts[index]) {
-                        if let matches = game.attempts[index].matches {
-                            MatchMarkersView(matches: matches)
-                        }
-                    }
+                    CodeView(code: game.attempts[index])
                 }
             }
             restartButton
-            ChoicesView(choices: WordBreakerGame.choices) { character in
+            ChoicesView(
+                choices: WordBreakerGame.choices,
+                dict: dict,
+            ) { character in
                 game.setGuess(to: character, at: selection)
                 moveSelection(by: +1)
             } backButtonPressed: {
@@ -54,12 +55,10 @@ struct WordBreakerView: View {
         .font(.largeTitle)
         .alert("Ingresa un número", isPresented: $isShowingRestartPrompt) {
             TextField("Número", value: $requestedWordLength, format: .number)
-                    .keyboardType(.numberPad)
+                .keyboardType(.numberPad)
             Button("Cancelar", role: .cancel) {}
-            Button("Aceptar") {
-                startNewGame(length: requestedWordLength)
-            }
-            .disabled(!isValidWordLength)
+            Button("Aceptar") { startNewGame(length: requestedWordLength) }
+                .disabled(!isValidWordLength)
         } message: {
             Text("El número debe estar entre 3 y 6")
         }
@@ -80,13 +79,26 @@ struct WordBreakerView: View {
 
     private func submitGuess() {
         let guess = game.guessCode.word.lowercased()
-        guard UITextChecker().isAWord(guess) else {
-            didSubmitInvalidWord = true
-            return
-        }
-
-        selection = 0
+//        guard UITextChecker().isAWord(guess) else {
+//            didSubmitInvalidWord = true
+//            return
+//        }
         game.submitGuess()
+        updateDictionary(game.attempts.last?.matches ?? [])
+        
+        selection = 0
+    }
+    
+    func updateDictionary(_ latestMatches: [Match]) {
+        for (character, match) in zip(Array(game.masterCode.word), latestMatches) {
+            switch match {
+            case .exact:
+                dict[character] = match
+            case .inexact where dict[character] != .exact:
+                dict[character] = match
+            default: break
+            }
+        }
     }
     
     private func moveSelection(by offset: Int) {

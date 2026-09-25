@@ -8,17 +8,17 @@ import SwiftUI
 
 struct ChoicesView: View {
     let choices: [Character]
+    let dict: [Character: Match]
     let choiceTapped: (Character) -> Void
     let backButtonPressed: (() -> Void)?
-    private let columns = [
-        GridItem(.adaptive(minimum: 30))
-    ]
+    private let columns = [GridItem(.adaptive(minimum: 30))]
     
     var body: some View {
         LazyVGrid(columns: columns) {
             ForEach(choices.indices, id: \.self) { index in
                 Circle()
                     .stroke()
+                    .fill(color(for: choices[index]))
                     .overlay {
                         Text(String(choices[index]))
                     }
@@ -31,16 +31,21 @@ struct ChoicesView: View {
             } label: {
                 Text("🔙")
             }
-            
         }
         .aspectRatio(10/3, contentMode: .fit)
+    }
+   
+    private func color(for character: Character) -> Color {
+        switch dict[character] {
+        case .exact: .green
+        case .inexact: .yellow
+        default: .clear
+        }
     }
 }
 
 #Preview {
-    ChoicesView(choices: Array("ABCDE")) { character in
+    ChoicesView(choices: Array("ABCDE"), dict: [:]) { character in
         print("Character \(character) was tapped")
-    } backButtonPressed: {
-        
-    }
+    } backButtonPressed: { }
 }

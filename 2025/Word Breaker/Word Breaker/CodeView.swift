@@ -52,12 +52,12 @@ struct CodeView<AncillaryView>: View where AncillaryView: View {
 
     private func pegColor(at index: Int) -> Color {
         switch code.kind {
-        case .master, .guess: return .primary
+        case .master, .guess: .primary
         case .attempt(let matches):
             switch matches[index] {
-            case .exact: return .green
-            case .inexact: return .yellow
-            case .noMatch: return .primary
+            case .exact: .green
+            case .inexact: .yellow
+            case .noMatch: .primary
             }
         }
     }

@@ -26,10 +26,9 @@ struct Code {
     }
     
     var matches: [Match]? {
-        if case .attempt(let array) = kind {
-            return array
-        } else {
-            return nil
+        switch kind {
+        case .attempt(let matches): matches
+        default: nil
         }
     }
     
